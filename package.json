@@ -1,0 +1,22 @@
+{
+    "name": "react-jml",
+    "version": "1.0.0",
+    "description": "Dynamic JSON rendering library using React.JS",
+    "repository": "https://github.com/iTecAI/react-jml.git",
+    "author": "Dax Harris <matteovh@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/react": "^18.0.28",
+        "microbundle": "^0.15.1"
+    },
+    "source": "src/index.tsx",
+    "main": "dist/index.js",
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "scripts": {
+        "dev": "microbundle watch",
+        "build": "microbundle"
+    }
+}
