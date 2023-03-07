@@ -1,8 +1,11 @@
-import {} from "./types";
+import { ValueItem } from "./types";
 import { JMLRendererSpec } from "./spec";
+import { ReactNode } from "react";
 
-export default function JMLRenderer<T extends JMLRendererSpec>(props: {
+export function JMLRenderer<T extends JMLRendererSpec>(props: {
     spec: T;
 }): JSX.Element {
-    return <></>;
+    return <span></span>;
 }
+
+export { JMLRendererSpec, ValueItem };
