@@ -1,14 +1,19 @@
+import { MantineProvider } from "@mantine/core";
 import React from "react";
-import { JMLRendererSpec, JMLRenderer } from "react-jml";
+import { JMLRenderer } from "react-jml";
 import "./App.css";
-
-class MantineRenderer extends JMLRendererSpec {}
 
 function App() {
     return (
-        <div className="App">
-            <JMLRenderer spec={new MantineRenderer()} />
-        </div>
+        <MantineProvider withGlobalStyles withCSSVariables withNormalizeCSS>
+            <div className="App">
+                <JMLRenderer
+                    renderer={"mantine"}
+                    data={{}}
+                    spec={{ supertype: "render" }}
+                />
+            </div>
+        </MantineProvider>
     );
 }
 

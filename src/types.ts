@@ -21,12 +21,21 @@ export function isValueItem(obj: any): obj is ValueItem {
     );
 }
 
+export function isComplexValueItem(obj: any): obj is ComplexValueItem {
+    return obj.supertype && obj.supertype === "value";
+}
+
 export type DynamicFunction = {
+    supertype: "dynamic_function";
     code: string; // String representing a JS function. Takes one argument, an object `opts`:{[key:string]: any}, and must return a value.
     opts: {
         [key: string]: ValueItem;
     }; // Dictionary of opt name : ValueItem
 };
+
+export function isDynamicFunction(obj: any): obj is DynamicFunction {
+    return obj.supertype && obj.supertype === "dynamic_function";
+}
 
 interface RendererInterface {
     supertype: "render";
@@ -52,3 +61,9 @@ export function isFieldRenderer<
 >(obj: any): obj is T {
     return obj.supertype && obj.supertype === "render" && obj.control;
 }
+
+interface GroupRender extends RendererInterface {
+    children: RenderTypes[];
+}
+
+export type RenderTypes = GroupRender;
