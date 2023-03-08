@@ -10,7 +10,7 @@ function App() {
                 <JMLRenderer
                     renderer={"mantine"}
                     data={{}}
-                    spec={{ supertype: "render" }}
+                    spec={{ supertype: "render", type: "group", children: [] }}
                 />
             </div>
         </MantineProvider>

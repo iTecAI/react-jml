@@ -37,6 +37,27 @@ export function isDynamicFunction(obj: any): obj is DynamicFunction {
     return obj.supertype && obj.supertype === "dynamic_function";
 }
 
+// Generators ===
+
+interface GeneratorInterface {
+    supertype: "generator";
+    type: string;
+}
+
+interface ListGeneratorInterface extends GeneratorInterface {
+    type: "list";
+    data: ValueItem;
+    renderer: RenderTypes;
+}
+
+export type GeneratorTypes = ListGeneratorInterface;
+
+export function isGenerator(obj: any): obj is GeneratorTypes {
+    return obj.supertype && obj.supertype === "generator";
+}
+
+// Renderers ===
+
 interface RendererInterface {
     supertype: "render";
     type: string;
@@ -63,7 +84,9 @@ export function isFieldRenderer<
 }
 
 interface GroupRender extends RendererInterface {
-    children: RenderTypes[];
+    type: "group";
+    children: Renderable;
 }
 
 export type RenderTypes = GroupRender;
+export type Renderable = RenderTypes[] | GeneratorTypes;

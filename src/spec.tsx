@@ -1,11 +1,13 @@
 import { entries, get } from "lodash";
 import { ReactNode, useMemo } from "react";
-import { useData, useFullData } from "./data";
+import { DataContextProvider, useData, useFullData } from "./data";
 import {
     DynamicFunction,
     isComplexValueItem,
     isFieldRenderer,
+    isGenerator,
     isValueItem,
+    Renderable,
     RenderTypes,
     ValueItem,
 } from "./types";
@@ -77,8 +79,31 @@ export abstract class JMLRendererSpec {
         );
     }
 
-    private _process_children(children: RenderTypes[]): ReactNode[] {
-        return children.map((c, i) => <this.Render item={c} key={i} />);
+    private _process_children(children: Renderable, data: any): ReactNode[] {
+        if (isGenerator(children)) {
+            switch (children.type) {
+                case "list":
+                    const iter: any[] = this._parseValueItem(
+                        children.data,
+                        data
+                    );
+                    return iter.map(
+                        ((c: any, i: number) => (
+                            <DataContextProvider value={c} setValue={() => {}}>
+                                <this.Render item={children.renderer} key={i} />
+                            </DataContextProvider>
+                        )).bind(this)
+                    );
+                default:
+                    return [<></>];
+            }
+        } else {
+            return children.map(
+                ((c: any, i: number) => <this.Render item={c} key={i} />).bind(
+                    this
+                )
+            );
+        }
     }
 
     public Render(props: { item: RenderTypes }): JSX.Element {
@@ -90,13 +115,15 @@ export abstract class JMLRendererSpec {
                 let children: ReactNode[] = [];
                 if (Object.keys(props.item).includes("children")) {
                     children = this._process_children(
-                        (props.item as any).children
+                        (props.item as any).children,
+                        data
                     );
                 }
                 if (Object.keys(props.item).includes("child")) {
-                    children = this._process_children([
-                        (props.item as any).child,
-                    ]);
+                    children = this._process_children(
+                        [(props.item as any).child],
+                        data
+                    );
                 }
                 return { ..._vals, children };
             }).bind(this),

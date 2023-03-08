@@ -13,7 +13,7 @@ const DataContext = createContext<[any, (key: string, value: any) => void]>([
 ]);
 
 export function DataContextProvider(props: {
-    children: ReactNode[];
+    children: ReactNode[] | ReactNode;
     value: any;
     setValue: (data: any) => void;
 }) {
